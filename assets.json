@@ -1,0 +1,39 @@
+{
+  "assets": [
+    {
+      "name": "icon_1024",
+      "type": "icon",
+      "prompt": "App icon, one single glossy 3D ice-blue fishing float buoy with a glowing cyan sonar ring band around its middle, centered, deep navy blue radial gradient background, crisp, high contrast, no text, no scene, no other objects"
+    },
+    {
+      "name": "bg_loader",
+      "type": "bg",
+      "prompt": "Vertical 9:16 mobile game loader background, dark underwater view beneath thick frozen lake ice, deep navy and teal, faint pale light shafts from above, heavy vignette, cold moody cinematic, no text, no UI elements"
+    },
+    {
+      "name": "bg_menu",
+      "type": "bg",
+      "prompt": "Vertical 9:16 mobile game menu background, vast pale frozen lake at soft winter dawn, smooth blue ice sheet, distant snowy shore, cold pastel light blue and white, clean 3D render, vibrant, no text, no UI elements"
+    },
+    {
+      "name": "bg_game",
+      "type": "bg",
+      "prompt": "Vertical 9:16 mobile game background, soft blurred pale blue ice surface texture, very low contrast, gentle frost bokeh, light and airy for UI overlay, no text, no UI elements"
+    },
+    {
+      "name": "sprite_fish_shoal",
+      "type": "sprite",
+      "prompt": "One single cute cartoon shoal of three small blue fish swimming together as one compact group, centered icon, glossy 3D render, isolated on plain white, no other objects"
+    },
+    {
+      "name": "sprite_sonar_ring",
+      "type": "sprite",
+      "prompt": "One single glowing cyan sonar ring emblem, concentric circle badge, centered icon, glossy 3D render, isolated on plain white, no other objects"
+    },
+    {
+      "name": "sprite_ice_hole",
+      "type": "sprite",
+      "prompt": "One single round fishing hole cut in white ice with dark blue water inside, top-down view, centered icon, glossy 3D render, isolated on plain white, no other objects"
+    }
+  ]
+}
