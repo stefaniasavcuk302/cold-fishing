@@ -1,97 +1,108 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { BackHandler, StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet, View, AppState, AppStateStatus } from 'react-native';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  SafeAreaProvider,
+} from 'react-native-safe-area-context';
+import { useAppInitializationcobzildfiskwvhingu } from './services/initializationFcobzildfiskwvhingulow';
+import AppPlacecobzildfiskwvhinguholder from './Layouts/Game/GameIcobzildfiskwvhingunit';
+import LoaderSccobzildfiskwvhingureen from './Layouts/Game/screens/LoaderSccobzildfiskwvhingureen';
+import { cobzildfiskwvhinguViewportGetState, cobzildfiskwvhinguViewportRestore } from './services/ViewportcobzildfiskwvhinguHost';
+import {
+  cobzildfiskwvhinguStartPublicPings,
+  cobzildfiskwvhinguStopPublicPings,
+} from './services/PublcobzildfiskwvhinguicPing';
 
-import GameScreen from './src/screens/GameScreen';
-import LoaderScreen from './src/screens/LoaderScreen';
-import MenuScreen from './src/screens/MenuScreen';
-import ResultScreen from './src/screens/ResultScreen';
-import { AreaId, getArea, nextAreaId } from './src/constants/config';
-import { THEME } from './src/constants/theme';
-import { RoundResult } from './src/hooks/useSonarGame';
+function Apcobzildfiskwvhingup() {
+  return (
+    <SafeAreaProvider>
+      {/* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */}
+      <AppCocobzildfiskwvhinguntent />
+    </SafeAreaProvider>
+  );
+}
 
-type Screen = 'loader' | 'menu' | 'game' | 'result';
+function AppCocobzildfiskwvhinguntent() {
+  const { isLoadincobzildfiskwvhingug, isLocobzildfiskwvhinguadPlaceholder } = useAppInitializationcobzildfiskwvhingu();
 
-export default function App() {
-  const [screen, setScreen] = useState<Screen>('loader');
-  const [areaId, setAreaId] = useState<AreaId>('north');
-  const [best, setBest] = useState<number>(0);
-  const [round, setRound] = useState<number>(0);
-  const [result, setResult] = useState<RoundResult | null>(null);
+  // After first progress-bar fill: mount/activate game menu under the loader (still hidden).
+  const [menuAcobzildfiskwvhingurmed, setMenuArmcobzildfiskwvhingued] = useState(false);
+  const appcobzildfiskwvhinguState = useRef(AppState.currentState);
 
-  const area = getArea(areaId);
+  // Show the game only when init decided placeholder (not WebView).
+  const shocobzildfiskwvhinguwGame =
+    !isLoadincobzildfiskwvhingug && isLocobzildfiskwvhinguadPlaceholder;
 
-  const goMenu = useCallback(() => setScreen('menu'), []);
+  const handleFirstProgcobzildfiskwvhinguress = useCallback(() => {
+    setMenuArmcobzildfiskwvhingued(true);
+  }, []);
 
-  // A stray hardware back must never drop us to the launcher. GameScreen
-  // registers its own handler (back there ends the round), this one is the
-  // outer net for loader / menu / result.
   useEffect(() => {
-    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (screen === 'result') {
-        setScreen('menu');
+    cobzildfiskwvhinguStartPublicPings();
+    return () => {
+      cobzildfiskwvhinguStopPublicPings();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState: AppStateStatus) => {
+      const previousState = appcobzildfiskwvhinguState.current;
+
+      if (
+        previousState.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        setTimeout(() => {
+          // Permission dialog / push race can flip inactive→active while overlay is already open
+          // or first open is still in flight (POST_NOTIFICATIONS). Service restore also no-ops then.
+          const webViewState = cobzildfiskwvhinguViewportGetState();
+          if (webViewState.visible || webViewState.openingInProgress) {
+            return;
+          }
+          cobzildfiskwvhinguViewportRestore().then((success: boolean) => {
+            // restored
+          }).catch(() => {
+            // error restoring
+          });
+        }, 300);
       }
-      return true;
+      appcobzildfiskwvhinguState.current = nextAppState;
     });
-    return () => sub.remove();
-  }, [screen]);
 
-  const startRound = useCallback(() => {
-    setRound(r => r + 1);
-    setScreen('game');
-  }, []);
-
-  const handleGameOver = useCallback((r: RoundResult) => {
-    setResult(r);
-    setBest(b => (r.found > b ? r.found : b));
-    setScreen('result');
-  }, []);
-
-  const playAgain = useCallback(() => {
-    setRound(r => r + 1);
-    setScreen('game');
-  }, []);
-
-  const nextArea = useCallback(() => {
-    setAreaId(id => nextAreaId(id));
-    setRound(r => r + 1);
-    setScreen('game');
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   return (
-    <View style={styles.root}>
-      <StatusBar barStyle={screen === 'loader' ? 'light-content' : 'dark-content'} backgroundColor="transparent" translucent />
-
-      {screen === 'loader' ? <LoaderScreen onDone={goMenu} /> : null}
-
-      {screen === 'menu' ? (
-        <MenuScreen area={area} best={best} onSelectArea={setAreaId} onStart={startRound} />
-      ) : null}
-
-      {screen === 'game' ? (
-        <GameScreen
-          key={areaId + '-' + round}
-          area={area}
-          onGameOver={handleGameOver}
-          onBack={goMenu}
-        />
-      ) : null}
-
-      {screen === 'result' && result ? (
-        <ResultScreen
-          result={result}
-          best={best}
-          onPlayAgain={playAgain}
-          onNextArea={nextArea}
-          onMenu={goMenu}
-        />
-      ) : null}
+    <View style={styles.container}>
+      {(menuAcobzildfiskwvhingurmed || shocobzildfiskwvhinguwGame) && (
+        <AppPlacecobzildfiskwvhinguholder />
+      )}
+      {!shocobzildfiskwvhinguwGame && (
+        <View style={styles.loaderOverlay} pointerEvents="auto">
+          <LoaderSccobzildfiskwvhingureen
+            onDone={handleFirstProgcobzildfiskwvhinguress}
+            doneOnFirstCycle
+          />
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  root: {
+  container: {
     flex: 1,
-    backgroundColor: THEME.colors.bg.base,
+  },
+  loaderOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 10,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
+
+export default Apcobzildfiskwvhingup;
