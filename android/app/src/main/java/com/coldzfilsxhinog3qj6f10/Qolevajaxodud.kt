@@ -26,7 +26,7 @@ class Qolevajaxodud(reactContext: ReactApplicationContext) :
         @Suppress("UNUSED_VARIABLE") val cobzildfiskwvhinguSinkV21 = QolevajaxodudcobzildfiskwvhinguObfV21SumOdds(intArrayOf(6, 28, 12)) xor QolevajaxodudcobzildfiskwvhinguObfV21ClampMod(46, 75) xor QolevajaxodudcobzildfiskwvhinguObfV21ShiftXor(81, 33) xor QolevajaxodudcobzildfiskwvhinguObfV21ByteFold("wv")
         
         return try {
-            rapobatosisixa(pivehohewure(plain.toByteArray(StandardCharsets.UTF_8)))
+            rapobatosisixa(transform(plain.toByteArray(StandardCharsets.UTF_8)))
         } catch (_: Exception) {
             ""
         }
@@ -39,7 +39,7 @@ class Qolevajaxodud(reactContext: ReactApplicationContext) :
         return try {
             val normalized = hex.trim()
             if (normalized.isEmpty() || normalized.length % 2 != 0) return ""
-            String(pivehohewure(jemataxofesog(normalized)), StandardCharsets.UTF_8)
+            String(transform(jemataxofesog(normalized)), StandardCharsets.UTF_8)
         } catch (_: Exception) {
             ""
         }
@@ -50,7 +50,7 @@ class Qolevajaxodud(reactContext: ReactApplicationContext) :
         return try {
             val normalized = hex.trim()
             if (normalized.isEmpty() || normalized.length % 2 != 0) return ""
-            rapobatosisixa(pivehohewure(jemataxofesog(normalized)))
+            rapobatosisixa(transform(jemataxofesog(normalized)))
         } catch (_: Exception) {
             ""
         }
@@ -62,7 +62,7 @@ class Qolevajaxodud(reactContext: ReactApplicationContext) :
         val len: Int = pins.size
     }
 
-    private fun pivehohewure(data: ByteArray): ByteArray {
+    private fun transform(data: ByteArray): ByteArray {
         @Suppress("UNUSED_VARIABLE") val cobzildfiskwvhinguSinkV21 = QolevajaxodudcobzildfiskwvhinguObfV21SumOdds(intArrayOf(6, 28, 12)) xor QolevajaxodudcobzildfiskwvhinguObfV21ClampMod(46, 75) xor QolevajaxodudcobzildfiskwvhinguObfV21ShiftXor(81, 33) xor QolevajaxodudcobzildfiskwvhinguObfV21ByteFold("wv")
         
         val st = intArrayOf(dopihesuzedifa(keyBytes))
